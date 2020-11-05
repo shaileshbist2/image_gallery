@@ -1,11 +1,10 @@
 import React, { useEffect, useReducer, useRef } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { useFetch, useInfiniteScroll, useLazyLoading } from '../customHooks';
+import { useFetch, useInfiniteScroll, useLazyLoading } from './customHooks';
 import { setImages } from '../redux/images/imageActions';
 let filtered = [];
 function Core({ match, setImages, data }) {
-    console.log(process.env);
     const imgReducer = (state, action) => {
         switch (action.type) {
             case 'STACK_IMAGES':
@@ -33,7 +32,6 @@ function Core({ match, setImages, data }) {
     useLazyLoading('.card-img-top', imgData.images)
     useInfiniteScroll(bottomBoundaryRef, pagerDispatch);
     if(data.search !== "") {
-        console.log(data.search);
         filtered = imgData.images.filter(p => new RegExp(data.search).test(p.alt_description));
     } else {
         filtered = imgData.images

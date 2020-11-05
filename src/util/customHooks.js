@@ -8,7 +8,7 @@ const unsplash = new Unsplash({
 export const useFetch = (data, category, dispatch) => {
     useEffect(() => {
         dispatch({ type: 'FETCHING_IMAGES', fetching: true });
-        unsplash.search.photos(category, data.page, 10, { orientation: "portrait", color: "green" }).then(toJson).then(json => {
+        unsplash.search.photos(category, data.page, 50, { orientation: "portrait", color: "green" }).then(toJson).then(json => {
             const images = json.results;
             dispatch({ type: 'STACK_IMAGES', images });
             dispatch({ type: 'FETCHING_IMAGES', fetching: false });
