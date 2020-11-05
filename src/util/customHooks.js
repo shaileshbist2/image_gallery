@@ -1,14 +1,12 @@
 import { useEffect, useCallback, useRef } from 'react';
 import Unsplash, { toJson } from 'unsplash-js';
-const unsplash = new Unsplash({
-    accessKey: "q0tpmTmn2yVWdwAd9PbL7vST-a7m5M1u7I3Jk3-Dn4E",
-    timeout: 500
-});
+import { unsplashConfig, pageLength } from '../config/config.json';
+const unsplash = new Unsplash(unsplashConfig);
 
 export const useFetch = (data, category, dispatch) => {
     useEffect(() => {
         dispatch({ type: 'FETCHING_IMAGES', fetching: true });
-        unsplash.search.photos(category, data.page, 50, { orientation: "portrait", color: "green" }).then(toJson).then(json => {
+        unsplash.search.photos(category, data.page, pageLength, { orientation: "portrait", color: "green" }).then(toJson).then(json => {
             const images = json.results;
             dispatch({ type: 'STACK_IMAGES', images });
             dispatch({ type: 'FETCHING_IMAGES', fetching: false });
