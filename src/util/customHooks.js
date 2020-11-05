@@ -1,7 +1,10 @@
 import { useEffect, useCallback, useRef } from 'react';
 import Unsplash, { toJson } from 'unsplash-js';
-import { unsplashConfig, pageLength } from '../config/config.json';
-const unsplash = new Unsplash(unsplashConfig);
+import { accessKey, pageLength } from '../config/config';
+const unsplash = new Unsplash({
+    "accessKey": accessKey,
+    "timeout": 500
+});
 
 export const useFetch = (data, category, dispatch) => {
     useEffect(() => {
