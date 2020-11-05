@@ -1,16 +1,16 @@
 # Image Gallery
 
-Installation
+### Installation
 npm install
 
-Development
+### Development
 npm start
 URL: http://localhost:3000
 
-Build
+### Build
 npm run build
 
-Production
+### Production
 npm run prod
 
 URL: http://localhost:4000
