@@ -1,12 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { setSearchBy, setSearchText } from '../redux/images/imageActions';
+import { setSearchBy, setSearchText, isCategoryClicked } from '../redux/images/imageActions';
 import './style.css';
 
 const category = ["forest", "mountain", "sports"];
 
-const Header = ({ setSearchBy, setSearchText }) => {
+const Header = ({ store, setSearchBy, setSearchText, isCategoryClicked }) => {
+
+    const handleClicked = (e) => {
+        setSearchBy(e.target.checked ? "remote" : "local")
+        isCategoryClicked(false);
+    }
+
     return (
         <div className="row">
             <div className="col-md-12 form-group" style={{ textAlign: "center" }}>
@@ -21,9 +27,9 @@ const Header = ({ setSearchBy, setSearchText }) => {
                                 <i className="fa fa-search" style={{ fontSize: "20px" }}></i>
                             </button>
                             <div className="input-group-append">
-                                <h4 className="switch-label" style={{ fontSize: "14px", margin: "2px 0px 0px 15px", position: "absolute" }}>Local</h4>
+                                <h4 className="switch-label text-capitalize" style={{ fontSize: "14px", margin: "2px 0px 0px 15px", position: "absolute" }}>{store.searchBy}</h4>
                                 <label className="switch" style={{ margin: "18px 0px 0px 6px" }}>
-                                    <input onClick={e => setSearchBy(e.target.checked ? "remote" : "local")} type="checkbox" />
+                                    <input onClick={e => handleClicked(e)} type="checkbox" defaultChecked={store.searchBy === 'remote' ? true : false} />
                                     <span className="slider round"></span>
                                 </label>
                             </div>
@@ -35,7 +41,7 @@ const Header = ({ setSearchBy, setSearchText }) => {
                         category.length > 0 &&
                         category.map((p, i) =>
                             <Link key={i} to={'/' + p}>
-                                <button type="button" className="btn btn-dark btn-sm btn-cat">
+                                <button onClick={() => { isCategoryClicked(true) }} type="button" className="btn btn-dark btn-sm btn-cat">
                                     {p}
                                 </button>
                             </Link>
@@ -49,7 +55,12 @@ const Header = ({ setSearchBy, setSearchText }) => {
 
 const mapDispatchToProps = dispatch => ({
     setSearchText: cat => dispatch(setSearchText(cat)),
-    setSearchBy: cat => dispatch(setSearchBy(cat))
+    setSearchBy: cat => dispatch(setSearchBy(cat)),
+    isCategoryClicked: cat => dispatch(isCategoryClicked(cat))
 });
 
-export default connect(null, mapDispatchToProps)(Header);
+const mapStateToProps = (state) => ({
+    store: state.data
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
