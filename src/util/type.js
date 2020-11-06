@@ -1,0 +1,3 @@
+export const STACK_IMAGES = 'STACK_IMAGES';
+export const FETCHING_IMAGES = 'FETCHING_IMAGES';
+export const ADVANCE_PAGE = 'ADVANCE_PAGE';

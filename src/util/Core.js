@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { useFetch, useInfiniteScroll, useLazyLoading } from './customHooks';
 import { setImages } from '../redux/images/imageActions';
+import { STACK_IMAGES, FETCHING_IMAGES, ADVANCE_PAGE } from './type';
 
 function Core({ match, setImages, store }) {
 
@@ -13,9 +14,9 @@ function Core({ match, setImages, store }) {
     const imgReducer = (state, action) => {
         const images = isCategoryClicked ? state.images.concat(action.images) : [];
         switch (action.type) {
-            case 'STACK_IMAGES':
+            case STACK_IMAGES:
                 return { ...state, images: images }
-            case 'FETCHING_IMAGES':
+            case FETCHING_IMAGES:
                 return { ...state, fetching: action.fetching }
             default:
                 return state;
@@ -24,7 +25,7 @@ function Core({ match, setImages, store }) {
 
     const pageReducer = (state, action) => {
         switch (action.type) {
-            case 'ADVANCE_PAGE':
+            case ADVANCE_PAGE:
                 return { ...state, page: state.page + 1 }
             default:
                 return state;

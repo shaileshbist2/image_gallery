@@ -2,6 +2,7 @@ import { useEffect, useCallback, useRef } from 'react';
 import Unsplash, { toJson } from 'unsplash-js';
 import { accessKey, pageLength } from '../config/config';
 import { setImages } from '../redux/images/imageActions';
+import { STACK_IMAGES, FETCHING_IMAGES, ADVANCE_PAGE } from './type';
 const unsplash = new Unsplash({
     "accessKey": accessKey,
     "timeout": 500
@@ -19,24 +20,24 @@ export const useFetch = (data, category, dispatch, store) => {
                 category: category.replace(/[/]/g, ''),
                 imgData: []
             });
-            dispatch({ type: 'STACK_IMAGES', images: [] });
+            dispatch({ type: STACK_IMAGES, images: [] });
         }
     }, [dispatch, searchBy, category])
-    
+
     useEffect(() => {
         if (searchBy === 'local') {
-            dispatch({ type: 'STACK_IMAGES', images: [] });
-            dispatch({ type: 'STACK_IMAGES', images: localStore });
+            dispatch({ type: STACK_IMAGES, images: [] });
+            dispatch({ type: STACK_IMAGES, images: localStore });
         }
     }, [dispatch, searchBy, localStore])
 
     useEffect(() => {
         if (searchBy === 'remote' && isCategoryClicked) {
-            dispatch({ type: 'FETCHING_IMAGES', fetching: true });
+            dispatch({ type: FETCHING_IMAGES, fetching: true });
             unsplash.search.photos(category, data.page, pageLength, { orientation: "portrait", color: "green" }).then(toJson).then(json => {
                 const images = json.results;
-                dispatch({ type: 'STACK_IMAGES', images });
-                dispatch({ type: 'FETCHING_IMAGES', fetching: false });
+                dispatch({ type: STACK_IMAGES, images });
+                dispatch({ type: FETCHING_IMAGES, fetching: false });
             });
         }
     }, [dispatch, category, data.page, searchBy, isCategoryClicked]);
@@ -48,7 +49,7 @@ export const useInfiniteScroll = (scrollRef, dispatch, searchBy, search) => {
             new IntersectionObserver(entries => {
                 entries.forEach(en => {
                     if (en.intersectionRatio > 0) {
-                        dispatch({ type: 'ADVANCE_PAGE' });
+                        dispatch({ type: ADVANCE_PAGE });
                     }
                 });
             }).observe(node);
